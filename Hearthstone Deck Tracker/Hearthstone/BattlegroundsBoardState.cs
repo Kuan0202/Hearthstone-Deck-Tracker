@@ -1,4 +1,5 @@
-﻿using Hearthstone_Deck_Tracker.Utility.Logging;
+﻿using Hearthstone_Deck_Tracker.Importing;
+using Hearthstone_Deck_Tracker.Utility.Logging;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,6 +35,7 @@ namespace Hearthstone_Deck_Tracker.Hearthstone
 				.Where(x => x.IsMinion && x.IsInZone(HearthDb.Enums.Zone.PLAY) && x.IsControlledBy(_game.Opponent.Id))
 				.Select(x => x.Clone())
 				.ToArray();
+			CardImageImporter.StartDownloadsFor(entities);
 			Log.Info($"Snapshotting board state for {opponentHero.Card.Name} with {entities.Length} entities");
 			LastKnownBoardState[GetBattlegroundsBoardState(opponentHero.CardId)] = new BoardSnapshot(entities, _game.GetTurnNumber());
 		}
